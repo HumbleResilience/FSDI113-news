@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+from environs import Env
+
+#environs
+env = Env()
+env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,10 +25,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-jfc11%a4806w1d8w+0(r$zpxl=te^xp*fnzz&0hc*2ddtgn85l'
+SECRET_KEY = env.str("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool("DEBUG", default=False)#toggles debug off in production and on in development
 
 ALLOWED_HOSTS = [".herokuapp.com", "127.0.0.1", "localhost"]
 
@@ -39,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts',
     'pages',
+    'articles',
 ]
 
 MIDDLEWARE = [
@@ -128,3 +134,13 @@ AUTH_USER_MODEL = 'accounts.CustomUser' #telling django i intend to use my own c
 
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = "login"
+
+EMAIL_BACKEND = 'django.core.mail.backends.%s.EmailBackend' % env.str('EMAIL_BACKEND', default="smtp")
+
+DEFAULT_FROM_EMAIL="emoore.tech@gmail.com"
+EMAIL_HOST = env.str("EMAIL_HOST")
+EMAIL_HOST_USER=env.str("EMAIL_HOST_USER")
+EMAIL_USE_TLS = True
+EMAIL_HOST_PASSWORD=env.str("EMAIL_HOST_PASSWORD")
+EMAIL_PORT=587
+

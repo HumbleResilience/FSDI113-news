@@ -26,8 +26,17 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="{% url 'home' %}">Home</a>
                 </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'post_list' %}">News</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'password_reset' %}">Reset Password</a>
+                </li>
 
                 {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'post_new' %}">Create Post</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'password_change' %}">Change Password</a>
                 </li>
@@ -46,11 +55,12 @@
         </div>
     </nav>
 
-    {% block content %}
+    <div style="margin:10px; padding: 10px">
+        {% block content %}
 
-    <p> body starts here</p>
-    {% endblock content %}
-
+        <p> body starts here</p>
+        {% endblock content %}
+    </div>
 
 
 
